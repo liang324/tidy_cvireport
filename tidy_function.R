@@ -1,3 +1,5 @@
+# BACKGROUND FUNCTION
+# NOT FOR EDIT
 # ——————————————————————————————————————————————————————————————————————————————
 # 提取函数
 extract_data_from_txt_files <- function(data_entry_lists, data_folder){
@@ -131,8 +133,8 @@ extract_data_from_txt_files <- function(data_entry_lists, data_folder){
         data_entry$data_index
       }
       
-      # data_name_prefix <- data_entry$data_name
-      data_name_prefix <- paste(data_entry$measure_index, data_entry$mode_index, sep = "-")
+      data_name_prefix <- data_entry$data_name
+      # data_name_prefix <- paste(data_entry$measure_index, data_entry$mode_index, sep = "-")
       
       data_names <- sapply(data_names, function(x) paste(data_name_prefix, "-[" , x, "]", sep = ""))
       
