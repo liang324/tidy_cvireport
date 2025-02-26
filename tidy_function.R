@@ -1,5 +1,59 @@
+# V250226
 # BACKGROUND FUNCTION
 # NOT FOR EDIT
+# ——————————————————————————————————————————————————————————————————————————————
+# 正则表达式函数
+
+and_regex <- function(...){
+  # 将所有参数合并为一个向量
+  keywords <- unlist(list(...))
+  
+  # 确保关键词是字符向量
+  keywords <- as.character(keywords)
+  
+  # 特殊字符处理
+  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  
+  # 使用paste()函数生成“与”正则表达式
+  # 每个关键词都用前瞻断言包裹
+  regex_pattern <- paste0("(?=.*", paste(keywords, collapse = ")(?=.*"), ").*$")
+  
+  # 返回生成的正则表达式
+  return(regex_pattern)
+}
+
+or_regex <- function(...){
+  
+  # 将所有参数合并为一个向量
+  keywords <- unlist(list(...))
+  
+  # 确保关键词是字符向量
+  keywords <- as.character(keywords)
+  
+  # 特殊字符处理
+  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  
+  # 使用paste()函数生成“或”正则表达式
+  regex_pattern <- paste(keywords, collapse = "|")
+  
+  # 返回生成的正则表达式
+  return(regex_pattern)
+}
+
+begin_regex <- function(...){
+  # 将所有参数合并为一个向量
+  keywords <- unlist(list(...))
+  
+  # 确保关键词是字符向量
+  keywords <- as.character(keywords)
+  
+  # 特殊字符处理
+  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  
+  # 返回生成的正则表达式
+  return(NULL)
+}
+
 # ——————————————————————————————————————————————————————————————————————————————
 # 提取函数
 extract_data_from_txt_files <- function(data_entry_lists, data_folder){
@@ -45,8 +99,8 @@ extract_data_from_txt_files <- function(data_entry_lists, data_folder){
     text_lines <- unlist(stringi::stri_split_lines(txt_raw))
     
     # 提取基本参数
-    patient_data$patient_name <- find_patient_info(text_lines[1:50], "患者")
-    patient_data$patient_ID <- find_patient_info(text_lines[1:50], "患者编号")
+    patient_data$patient_name <- find_patient_info(text_lines[1:50], or_regex("患者","Patient"))
+    patient_data$patient_ID <- find_patient_info(text_lines[1:50], or_regex("患者编号", "Patient ID"))
     patient_data$exam_date <- find_patient_info(text_lines[1:50], "病例日期")
     patient_data$exam_ID <- find_patient_info(text_lines[1:50], "检查编号")
     patient_data$source <- file_path
