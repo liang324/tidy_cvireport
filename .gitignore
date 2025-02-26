@@ -1,8 +1,8 @@
-.Rproj
+*.Rproj
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
 _Saves
 my_data
-.xlsx
+*.xlsx
