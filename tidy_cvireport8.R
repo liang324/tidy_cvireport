@@ -1,4 +1,4 @@
-# V2.1
+# V2025-02-25
 # ***本文件用于批量整理CVI导出的txt报告至excel***
 # ***请将本文件，tidy_function.R,以及待处理的txt文件夹置于同一文件夹内***
 
@@ -19,9 +19,6 @@ data_folder <- "my_data"
 
 data_entry_lists <- list()
 
-
-# paste("keyword1", "keyword2", sep = ".*")  # 与，保持前后顺序， “与” 逻辑关键词的书写范例
-# paste("keyword1", "keyword2", sep = "|")  # 或，保持前后顺序， “或” 逻辑关键词的书写范例
 
 ## 举个例子
 ## 1-3级关键词中如有特殊字符，需要转义，如“*”需要写成“\\*”
@@ -119,7 +116,7 @@ data_entry_lists <- append(data_entry_lists, list(list(
   data_name = "左室整体Strain_SAX",
   measure_index = "Global Measurements Report",
   mode_index = "Left Ventricle    ",
-  data_index = c(paste("SAX", "Global", sep = ".*")),
+  data_index = regex_and("SAX", "Global"),
   data_cols = list("pGRS" = 3, "pGCS" = 4)
 )))
 
@@ -128,7 +125,7 @@ data_entry_lists <- append(data_entry_lists, list(list(
   data_name = "左室整体Strain_LAX",
   measure_index = "Global Measurements Report",
   mode_index = "Left Ventricle    ",
-  data_index = c(paste("LAX", "Global", sep = ".*")),
+  data_index = regex_and("LAX", "Global"),
   data_cols = list("pGRS" = 3, "pGLS" = 5)
 )))
 
@@ -137,7 +134,7 @@ data_entry_lists <- append(data_entry_lists, list(list(
   data_name = "右室整体Strain_SAX",
   measure_index = "Global Measurements Report",
   mode_index = "Right Ventricle    ",
-  data_index = c(paste("SAX", "Global", sep = ".*")),
+  data_index = regex_and("SAX", "Global"),
   data_cols = list("pGRS" = 3, "pGCS" = 4)
 )))
 
@@ -146,7 +143,7 @@ data_entry_lists <- append(data_entry_lists, list(list(
   data_name = "右室整体Strain_LAX",
   measure_index = "Global Measurements Report",
   mode_index = "Right Ventricle    ",
-  data_index = c(paste("LAX", "Global", sep = ".*")),
+  data_index = regex_and("LAX", "Global"),
   data_cols = list("pGRS" = 3, "pGLS" = 5)
 )))
 

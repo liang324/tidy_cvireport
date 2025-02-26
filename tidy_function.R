@@ -1,28 +1,31 @@
-# V250226
+# V2025-02-26
 # BACKGROUND FUNCTION
 # NOT FOR EDIT
+
 # ——————————————————————————————————————————————————————————————————————————————
 # 正则表达式函数
-
-and_regex <- function(...){
+regex_and <- function(...){
   # 将所有参数合并为一个向量
   keywords <- unlist(list(...))
   
   # 确保关键词是字符向量
   keywords <- as.character(keywords)
   
-  # 特殊字符处理
-  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  # 待完善：特殊字符处理
+  # keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
   
   # 使用paste()函数生成“与”正则表达式
   # 每个关键词都用前瞻断言包裹
-  regex_pattern <- paste0("(?=.*", paste(keywords, collapse = ")(?=.*"), ").*$")
+  # regex_pattern <- paste0("(?=.*", paste(keywords, collapse = ")(?=.*"), ").*$")
+  
+  # 使用paste()函数生成“与”正则表达式
+  regex_pattern <- paste(keywords, collapse = ".*")
   
   # 返回生成的正则表达式
   return(regex_pattern)
 }
 
-or_regex <- function(...){
+regex_or <- function(...){
   
   # 将所有参数合并为一个向量
   keywords <- unlist(list(...))
@@ -30,8 +33,8 @@ or_regex <- function(...){
   # 确保关键词是字符向量
   keywords <- as.character(keywords)
   
-  # 特殊字符处理
-  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  # 待完善：特殊字符处理
+  # keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
   
   # 使用paste()函数生成“或”正则表达式
   regex_pattern <- paste(keywords, collapse = "|")
@@ -40,18 +43,24 @@ or_regex <- function(...){
   return(regex_pattern)
 }
 
-begin_regex <- function(...){
+regex_begin <- function(...){
   # 将所有参数合并为一个向量
   keywords <- unlist(list(...))
   
   # 确保关键词是字符向量
   keywords <- as.character(keywords)
   
-  # 特殊字符处理
-  keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  # 待完善：特殊字符处理
+  # keywords <- gsub("([.^$*+?(){}|\\[\\]])", "\\\\\\1", keywords, perl = TRUE)
+  
+  # 使用paste()函数生成“与”正则表达式
+  regex_pattern <- paste(keywords, collapse = ".*")
+  
+  # 使用paste()函数增加前缀符号“^”
+  regex_pattern <- paste0("^", regex_pattern)
   
   # 返回生成的正则表达式
-  return(NULL)
+  return(regex_pattern)
 }
 
 # ——————————————————————————————————————————————————————————————————————————————
@@ -99,10 +108,10 @@ extract_data_from_txt_files <- function(data_entry_lists, data_folder){
     text_lines <- unlist(stringi::stri_split_lines(txt_raw))
     
     # 提取基本参数
-    patient_data$patient_name <- find_patient_info(text_lines[1:50], or_regex("患者","Patient"))
-    patient_data$patient_ID <- find_patient_info(text_lines[1:50], or_regex("患者编号", "Patient ID"))
-    patient_data$exam_date <- find_patient_info(text_lines[1:50], "病例日期")
-    patient_data$exam_ID <- find_patient_info(text_lines[1:50], "检查编号")
+    patient_data$patient_name <- find_patient_info(text_lines[1:50], regex_or("患者", "Patient"))
+    patient_data$patient_ID <- find_patient_info(text_lines[1:50], regex_or("患者编号", "PatientID"))
+    patient_data$exam_date <- find_patient_info(text_lines[1:50], regex_or("病例日期", "Study Date"))
+    patient_data$exam_ID <- find_patient_info(text_lines[1:50], regex_or("检查编号", "AccessionNumber"))
     patient_data$source <- file_path
     
     # 输出的一行数据
